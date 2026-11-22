@@ -1,0 +1,41 @@
+name: Tambito quality checks
+
+on:
+  push:
+    branches: [main, "feat/**"]
+  pull_request:
+    branches: [main]
+
+jobs:
+  static-and-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PHP runtime
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mysqli, fileinfo, session
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: PHP syntax
+        run: find . -type f -name '*.php' -print0 | xargs -0 -n 1 php -l
+      - name: JavaScript syntax
+        run: find js -type f -name '*.js' -print0 | xargs -0 -n 1 node --check
+      - name: PHP unit smoke
+        run: php tests/smoke.php
+      - name: HTTP security smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -S 127.0.0.1:8765 -t . >/tmp/tambito-php.log 2>&1 &
+          server_pid=$!
+          trap 'kill "$server_pid" 2>/dev/null || true' EXIT
+          sleep 2
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8765/api/guardar_producto.php)" = 405
+          test "$(curl -s -X POST -o /dev/null -w '%{http_code}' http://127.0.0.1:8765/api/guardar_producto.php)" = 403
+          test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8765/api/update_password.php)" = 403
+          curl --fail --silent http://127.0.0.1:8765/api/categorias.php >/tmp/tambito-categories.json
+          php -r 'json_decode(file_get_contents("/tmp/tambito-categories.json"), true, 512, JSON_THROW_ON_ERROR);'
