@@ -9,7 +9,7 @@
 | Módulo | Estado |
 | --- | --- |
 | Página de inicio, secciones informativas y contacto de demostración | Implementado |
-| Catálogo con categorías y fichas de producto | Implementado con datos de muestra |
+| Catálogo con categorías, búsqueda y fichas de producto | Implementado con datos de muestra |
 | Carrito con cantidades, eliminar y total | Implementado, **solo en localStorage** |
 | Registro e inicio de sesión (MySQL) | Implementado, requiere configuración local |
 | Roles usuario / administrador | Implementado |
@@ -77,7 +77,7 @@ No se proporcionan contraseñas administrativas predeterminadas. El registro pú
 
 ## Uso
 
-**Para visitantes:** explora categorías, abre detalles, añade artículos al carrito y ajusta cantidades. El carrito se guarda en el navegador, no en MySQL; **no existe checkout real**.
+**Para visitantes:** busca productos desde la navegación, explora categorías, abre detalles, añade artículos al carrito y ajusta cantidades. El carrito se guarda en el navegador, no en MySQL; **no existe checkout real**.
 
 **Para administradores locales:** edita el eslogan, categorías destacadas, información institucional ficticia, contacto de prueba y productos. Las escrituras del panel exigen una sesión de administración válida y un token CSRF.
 
@@ -106,7 +106,7 @@ find js -type f -name '*.js' -print0 | xargs -0 -n 1 node --check
 php tests/smoke.php
 ```
 
-También se incluye GitHub Actions para comprobaciones sintácticas y pruebas HTTP básicas de las restricciones administrativas. **No sustituyen una prueba integral del flujo PHP + MySQL ni una auditoría de seguridad de producción**.
+GitHub Actions realiza análisis sintáctico, pruebas del carrito, comprobaciones HTTP de autorización y una integración aislada con MySQL para registro, inicio de sesión, roles y CSRF. **Estas pruebas automatizadas no equivalen a una auditoría de seguridad de producción ni a pruebas E2E visuales.**
 
 ## Seguridad y limitaciones conocidas
 
