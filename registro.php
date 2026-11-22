@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/security.php';
+tambito_session();
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -26,18 +30,15 @@
             </div>
 
             <?php
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-            }
-
-            if (isset($_SESSION['error_message_registro'])) {
-                echo '<div class="message-container error-message">' . $_SESSION['error_message_registro'] . '</div>';
+if (isset($_SESSION['error_message_registro'])) {
+                echo '<div class="message-container error-message">' . htmlspecialchars((string)$_SESSION['error_message_registro'], ENT_QUOTES, 'UTF-8') . '</div>';
                 unset($_SESSION['error_message_registro']);
             }
             ?>
 
             <!-- Formulario -->
             <form class="login-form" action="guardar_usuario.php" method="POST" onsubmit="return validarRegistro()">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(tambito_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
                 <!-- Nombre -->
                 <div class="input-group">
                     <label for="nombre">Nombre</label>
@@ -83,7 +84,7 @@
                 <!-- Contraseña -->
                 <div class="input-group">
                     <label for="password">Contraseña</label>
-                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                    <input type="password" id="password" name="password" minlength="12" autocomplete="new-password" placeholder="••••••••" required>
                     <i class="fas fa-lock input-icon"></i>
                 </div>
 
