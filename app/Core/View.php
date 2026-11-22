@@ -7,14 +7,14 @@ final class View
 {
     public static function render(string $page, array $data = []): void
     {
-        $pages = ['home', 'catalog', 'about', 'contact', 'cart'];
+        $pages = ['home', 'catalog', 'about', 'contact', 'cart', 'admin'];
         if (!in_array($page, $pages, true)) {
             http_response_code(404);
             exit('Página no encontrada');
         }
         extract($data, EXTR_SKIP);
         $pageFile = dirname(__DIR__) . '/Views/pages/' . $page . '.php';
-        require dirname(__DIR__) . '/Views/layouts/site.php';
+        require dirname(__DIR__) . '/Views/layouts/' . ($page === 'admin' ? 'admin' : 'site') . '.php';
     }
 
     public static function escape(mixed $text): string
