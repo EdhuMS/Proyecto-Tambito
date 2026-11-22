@@ -1,54 +1,29 @@
 <?php
-header('Content-Type: application/json');
-
-$dataFile = '../data/categorias.json';
-
-if (!file_exists($dataFile)) {
-    echo json_encode(["success" => false, "message" => "Archivo JSON no encontrado."]);
-    exit;
+require_once __DIR__ . '/../security.php';
+tambito_admin_api();
+$dataFile = __DIR__ . '/../data/categorias.json';
+$data = tambito_read_json($dataFile);
+$codigo = trim((string)($_POST['codigo'] ?? ''));
+$nombre = trim((string)($_POST['nombre'] ?? ''));
+$precio = filter_var($_POST['precio'] ?? null, FILTER_VALIDATE_FLOAT);
+if (!preg_match('/^[A-Za-z0-9_-]{2,30}$/', $codigo) || $nombre === '' ||
+    mb_strlen($nombre) > 150 || $precio === false || $precio <= 0 || $precio > 100000) {
+    tambito_fail('Código, nombre o precio inválido.');
 }
-
-$data = json_decode(file_get_contents($dataFile), true);
-
-$codigo = $_POST['codigo'];
-$nombre = $_POST['nombre'];
-$precio = floatval($_POST['precio']);
-$imagen_url = null;
-
-if (isset($_FILES['imagen'])) {
-    $tmp = $_FILES['imagen']['tmp_name'];
-    $nombreArchivo = basename($_FILES['imagen']['name']);
-    $ruta = "../uploads/" . $nombreArchivo;
-
-    if (!move_uploaded_file($tmp, $ruta)) {
-        echo json_encode(["success" => false, "message" => "No se pudo subir la imagen."]);
-        exit;
+$found = false;
+foreach ($data as &$category) {
+    foreach (($category['productos'] ?? []) as &$product) {
+        if (($product['codigo'] ?? '') !== $codigo) continue;
+        $product['nombre'] = $nombre;
+        $product['precio'] = round((float)$precio, 2);
+        $image = tambito_upload_image('imagen', __DIR__ . '/../uploads', 'uploads');
+        if ($image !== null) $product['imagen_url'] = $image;
+        $found = true;
+        break 2;
     }
-
-    $imagen_url = "uploads/" . $nombreArchivo;
+    unset($product);
 }
-
-// Buscar y actualizar el producto
-$productoEncontrado = false;
-foreach ($data as $categoria => &$contenido) {
-    foreach ($contenido['productos'] as &$producto) {
-        if ($producto['codigo'] === $codigo) {
-            $producto['nombre'] = $nombre;
-            $producto['precio'] = $precio;
-            if ($imagen_url) {
-                $producto['imagen_url'] = $imagen_url;
-            }
-            $productoEncontrado = true;
-            break 2;
-        }
-    } 
-}
-
-if (!$productoEncontrado) {
-    echo json_encode(["success" => false, "message" => "Producto no encontrado."]);
-    exit;
-}
-
-file_put_contents($dataFile, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
-echo json_encode(["success" => true]);
+unset($category, $product);
+if (!$found) tambito_fail('Producto no encontrado.', 404);
+tambito_write_json($dataFile, $data);
+echo json_encode(['success' => true]);
