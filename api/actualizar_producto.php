@@ -12,7 +12,8 @@ if (!preg_match('/^[A-Za-z0-9_-]{2,30}$/', $codigo) || $nombre === '' ||
 }
 $found = false;
 foreach ($data as &$category) {
-    foreach (($category['productos'] ?? []) as &$product) {
+    if (!isset($category['productos']) || !is_array($category['productos'])) continue;
+    foreach ($category['productos'] as &$product) {
         if (($product['codigo'] ?? '') !== $codigo) continue;
         $product['nombre'] = $nombre;
         $product['precio'] = round((float)$precio, 2);
