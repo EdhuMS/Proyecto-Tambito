@@ -1,7 +1,10 @@
 # Cierre técnico de Tambito — 2026-11-21
 
 **Tipo de cierre:** demostración académica para portafolio, no aplicación comercial ni certificación de seguridad.
-**Rama de trabajo:** `feat/completion-hardening-2026`.
+**Estado:** CERRADO COMO DEMOSTRACIÓN ACADÉMICA (no producción).
+**Pull request:** [#1](https://github.com/EdhuMS/Proyecto-Tambito/pull/1), integrado en `main`.
+**Commit de integración:** `f9af1dc98e5b13fd72bfbdeabb21e936bc0b5ff8`.
+**Validación final de rama:** [GitHub Actions 44976332475](https://github.com/EdhuMS/Proyecto-Tambito/actions/runs/44976332475): ambos jobs `success`, incluyendo MySQL temporal.
 **Fuente inicial:** repositorio existente; se respetó su historial.
 
 ## Problemas identificados en la auditoría
@@ -43,7 +46,7 @@ Las comprobaciones definidas en `.github/workflows/quality.yml` incluyen sintaxi
 
 ## Criterio de cierre
 
-El proyecto puede mostrarse como **prototipo académico documentado** cuando el PR de endurecimiento esté integrado y los checks estáticos/HTTP hayan pasado. La categoría **listo para producción** permanece descartada.
+**Criterio cumplido:** el PR de endurecimiento fue integrado en `main` y sus comprobaciones automatizadas, incluidos los flujos de MySQL de prueba, finalizaron satisfactoriamente. Se declara cerrado como **prototipo académico documentado y reproducible**. La categoría **listo para producción** permanece descartada.
 
 ## Próximas acciones opcionales
 
