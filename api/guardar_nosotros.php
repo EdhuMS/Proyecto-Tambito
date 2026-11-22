@@ -7,7 +7,7 @@ $new = [];
 foreach (['nosotros', 'mision', 'vision'] as $key) {
     $title = trim((string)($_POST[$key . '_titulo'] ?? ''));
     $desc = trim((string)($_POST[$key . '_descripcion'] ?? ''));
-    if ($title === '' || mb_strlen($title) > 150 || mb_strlen($desc) > 4000) {
+    if ($title === '' || strlen($title) > 150 || strlen($desc) > 4000) {
         tambito_fail('Título o descripción inválida.');
     }
     $image = tambito_upload_image($key . '_imagen', __DIR__ . '/../uploads', 'uploads');
