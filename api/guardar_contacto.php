@@ -6,7 +6,7 @@ $fields = ['telefono', 'email', 'instagram_url', 'instagram_text', 'facebook_url
 $contact = [];
 foreach ($fields as $key) {
     $value = trim((string)($_POST['contacto_' . $key] ?? ''));
-    if (mb_strlen($value) > 250) tambito_fail('Uno de los campos excede 250 caracteres.');
+    if (strlen($value) > 250) tambito_fail('Uno de los campos excede 250 caracteres.');
     $contact[$key] = $value;
 }
 if ($contact['email'] !== '' && !filter_var($contact['email'], FILTER_VALIDATE_EMAIL)) {
