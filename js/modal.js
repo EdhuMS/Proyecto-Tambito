@@ -59,8 +59,10 @@ document.addEventListener('DOMContentLoaded', () => {
         quantityInput.value = currentValue + 1;
     });
 
+    let activeProduct = null;
     // Función para abrir el modal con los datos del producto
     window.openProductModal = (product) => {
+        activeProduct = product;
         document.getElementById('modal-product-image').src = product.imagen_url + '?v=' + Date.now();
         document.getElementById('modal-product-name').textContent = product.nombre;
         document.getElementById('modal-product-price').textContent = parseFloat(product.precio).toFixed(2);
@@ -85,13 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'flex';
     };
 
-    // Funcionalidad de añadir al carrito (ejemplo básico, integrar con tu lógica de carrito real)
     const addToCartModalButton = document.querySelector('.add-to-cart-modal');
     addToCartModalButton.addEventListener('click', () => {
-        const productName = document.getElementById('modal-product-name').textContent;
-        const productPrice = document.getElementById('modal-product-price').textContent;
-        const quantity = quantityInput.value;
-        alert(`Añadido al carrito: ${quantity} x ${productName} (S/ ${productPrice} c/u)`);
-        modal.style.display = 'none'; 
+        const quantity = Math.max(1, Math.min(99, Number.parseInt(quantityInput.value, 10) || 1));
+        if (window.TambitoCart?.add(activeProduct, quantity)) {
+            modal.style.display = 'none';
+        } else {
+            alert('No se pudo añadir el producto al carrito de demostración.');
+        }
     });
 });
