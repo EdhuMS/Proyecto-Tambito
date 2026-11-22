@@ -56,3 +56,8 @@
   .hero-art{min-height:235px}
   .site-actions .cart-link{padding:.4rem .55rem}
 }
+
+/* Keep the full transparent wordmark readable at narrow widths. */
+@media(max-width:900px){.site-links{border-top-color:rgba(255,255,255,.22)}.site-links a{border-bottom-color:rgba(255,255,255,.18)}}
+@media(max-width:680px){.site-nav{column-gap:.45rem}.brand-logo{width:clamp(108px,32vw,150px)}.site-actions{margin-left:auto}.nav-toggle{padding:.4rem .62rem}}
+@media(max-width:380px){.brand-logo{width:105px}.site-actions .cart-link{font-size:.72rem}}
