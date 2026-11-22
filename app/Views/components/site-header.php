@@ -5,7 +5,7 @@
 <header class="site-header" data-site-header>
   <div class="container site-nav">
     <a class="brand" href="index.php" aria-label="Tambito, ir al inicio">
-      <span class="brand-symbol" aria-hidden="true">T</span><span>Tambito<span class="brand-dot">.</span></span>
+      <img class="brand-logo" src="img/branding/tambito-logo-transparent.png" width="174" height="62" alt="Tambito+" decoding="async">
     </a>
     <button class="nav-toggle" type="button" data-menu-toggle aria-controls="nav-menu" aria-expanded="false" aria-label="Abrir menú de navegación">
       <span aria-hidden="true">☰</span>
