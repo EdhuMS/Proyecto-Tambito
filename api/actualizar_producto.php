@@ -7,7 +7,7 @@ $codigo = trim((string)($_POST['codigo'] ?? ''));
 $nombre = trim((string)($_POST['nombre'] ?? ''));
 $precio = filter_var($_POST['precio'] ?? null, FILTER_VALIDATE_FLOAT);
 if (!preg_match('/^[A-Za-z0-9_-]{2,30}$/', $codigo) || $nombre === '' ||
-    mb_strlen($nombre) > 150 || $precio === false || $precio <= 0 || $precio > 100000) {
+    strlen($nombre) > 150 || $precio === false || $precio <= 0 || $precio > 100000) {
     tambito_fail('Código, nombre o precio inválido.');
 }
 $found = false;
