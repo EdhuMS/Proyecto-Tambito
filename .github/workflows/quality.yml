@@ -39,3 +39,35 @@ jobs:
           test "$(curl -s -o /dev/null -w '%{http_code}' http://127.0.0.1:8765/api/update_password.php)" = 403
           curl --fail --silent http://127.0.0.1:8765/api/categorias.php >/tmp/tambito-categories.json
           php -r 'json_decode(file_get_contents("/tmp/tambito-categories.json"), true, 512, JSON_THROW_ON_ERROR);'
+
+  mysql-integration:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ephemeral-ci-root-password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -u root -pephemeral-ci-root-password"
+          --health-interval=10s --health-timeout=5s --health-retries=15
+    env:
+      TAMBITO_TEST_MYSQL_ROOT_PASSWORD: ephemeral-ci-root-password
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP with mysqli
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mysqli, fileinfo, session
+          coverage: none
+      - name: Prepare temporary MySQL schema and config
+        run: php tests/integration_setup.php
+      - name: Start local demo server
+        shell: bash
+        run: |
+          php -S 127.0.0.1:8766 -t . >/tmp/tambito-integration.log 2>&1 &
+          sleep 2
+      - name: Exercise real authentication and admin permissions
+        run: bash tests/integration.sh
