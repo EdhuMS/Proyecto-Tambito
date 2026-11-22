@@ -7,7 +7,7 @@ final class View
 {
     public static function render(string $page, array $data = []): void
     {
-        $pages = ['home', 'catalog', 'about', 'contact', 'cart', 'admin'];
+        $pages = ['home', 'catalog', 'about', 'contact', 'cart', 'admin', 'login', 'register'];
         if (!in_array($page, $pages, true)) {
             http_response_code(404);
             exit('Página no encontrada');
@@ -24,7 +24,7 @@ final class View
 
     public static function partial(string $name, array $data = []): void
     {
-        $allowed = ['site-header', 'site-footer', 'product-card', 'section-heading', 'category-card'];
+        $allowed = ['site-header', 'site-footer', 'product-card', 'section-heading', 'category-card', 'form-field'];
         if (!in_array($name, $allowed, true)) {
             throw new \InvalidArgumentException('Componente desconocido');
         }
