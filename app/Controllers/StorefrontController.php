@@ -28,7 +28,7 @@ final class StorefrontController
     {
         $query = trim((string)($_GET['q'] ?? ''));
         $category = trim((string)($_GET['categoria'] ?? ''));
-        $query = mb_substr($query, 0, 100, 'UTF-8');
+        $query = function_exists('mb_substr') ? mb_substr($query, 0, 100, 'UTF-8') : substr($query, 0, 100);
         $groups = $this->content->products($category !== '' ? $category : null, $query);
         View::render('catalog', [
             'title' => 'Catálogo',
