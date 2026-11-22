@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/security.php';
+tambito_session();
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -23,22 +27,19 @@
             </div>
 
             <?php
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-            }
-
-            if (isset($_SESSION['success_message_login'])) {
-                echo '<div class="message-container success-message">' . $_SESSION['success_message_login'] . '</div>';
+if (isset($_SESSION['success_message_login'])) {
+                echo '<div class="message-container success-message">' . htmlspecialchars((string)$_SESSION['success_message_login'], ENT_QUOTES, 'UTF-8') . '</div>';
                 unset($_SESSION['success_message_login']);
             }
 
             if (isset($_SESSION['error_message'])) {
-                echo '<div class="message-container error-message">' . $_SESSION['error_message'] . '</div>';
+                echo '<div class="message-container error-message">' . htmlspecialchars((string)$_SESSION['error_message'], ENT_QUOTES, 'UTF-8') . '</div>';
                 unset($_SESSION['error_message']);
             }
             ?>
 
             <form class="login-form" action="validar_usuario.php" method="POST" onsubmit="return validarLogin()">
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(tambito_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
                 <div class="input-group">
                     <label for="email">Correo electrónico</label>
                     <input type="email" id="email" name="email" placeholder="tucorreo@ejemplo.com" required>
@@ -47,7 +48,7 @@
 
                 <div class="input-group">
                     <label for="password">Contraseña</label>
-                    <input type="password" id="password" name="password" placeholder="••••••••" required>
+                    <input type="password" id="password" name="password" autocomplete="current-password" placeholder="••••••••" required>
                     <i class="fas fa-lock input-icon"></i>
                 </div>
 
