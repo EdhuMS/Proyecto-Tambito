@@ -1,7 +1,7 @@
 <footer class="site-footer">
   <div class="container footer-grid">
     <div>
-      <a class="footer-brand" href="index.php">Tambito<span class="brand-dot">.</span></a>
+      <a class="footer-brand" href="index.php" aria-label="Tambito+, volver al inicio"><img class="footer-brand-logo" src="img/branding/tambito-logo-transparent.png" width="172" height="61" alt="Tambito+" loading="lazy" decoding="async"></a>
       <p>Un ejercicio de desarrollo web con arquitectura MVC, componentes compartidos y datos de demostración.</p>
     </div>
     <div>
