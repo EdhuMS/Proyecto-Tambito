@@ -1,52 +1,42 @@
 <?php
-session_start(); // Iniciar la sesión al principio
-include 'conexion.php';
-
-$nombre    = $_POST['nombre'];
-$apellido  = $_POST['apellido'];
-$edad      = $_POST['edad'];
-$celular   = $_POST['celular'];
-$direccion = $_POST['direccion'];
-$email     = $_POST['email'];
-$password  = password_hash($_POST['password'], PASSWORD_DEFAULT); // cifrado
-
-// Siempre guardamos como usuario normal
-$rol = 'usuario';
-
-// Validar si el email ya existe antes de insertar
-$sql_check_email = "SELECT id FROM usuarios WHERE email = ?";
-$stmt_check_email = $conn->prepare($sql_check_email);
-$stmt_check_email->bind_param("s", $email);
-$stmt_check_email->execute();
-$stmt_check_email->store_result();
-
-if ($stmt_check_email->num_rows > 0) {
-    // El email ya existe: Mensaje de error para la página de REGISTRO
-    $_SESSION['error_message_registro'] = "❌ El correo electrónico ya está registrado. Por favor, utiliza otro.";
-    header("Location: registro.php"); // Redirige de vuelta a registro.php
-    exit();
+require_once __DIR__ . '/security.php';
+tambito_session();
+if (($_SERVER['REQUEST_METHOD'] ?? '') !== 'POST') {
+    header('Location: registro.php', true, 303); exit;
 }
-$stmt_check_email->close();
-
-
-$sql = "INSERT INTO usuarios (nombre, apellido, edad, celular, direccion, email, password, rol)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("ssisssss", $nombre, $apellido, $edad, $celular, $direccion, $email, $password, $rol);
-
-if ($stmt->execute()) {
-    // Registro exitoso: Mensaje de éxito para la página de LOGIN
-    $_SESSION['success_message_login'] = "🎉 ¡Cuenta creada correctamente! Por favor, inicia sesión.";
-    header("Location: login.php"); // Redirige a login.php
-    exit();
-} else {
-    // Error en el registro: Mensaje de error para la página de REGISTRO
-    error_log("Error al registrar usuario: " . $stmt->error);
-    $_SESSION['error_message_registro'] = "❌ Hubo un error al crear tu cuenta. Por favor, inténtalo de nuevo.";
-    header("Location: registro.php"); // Redirige de vuelta a registro.php
-    exit();
+if (!hash_equals(tambito_csrf_token(), (string)($_POST['csrf_token'] ?? ''))) {
+    $_SESSION['error_message_registro'] = 'Sesión de formulario vencida. Vuelve a intentarlo.';
+    header('Location: registro.php', true, 303); exit;
 }
-
-$conn->close();
-?>
+$nombre = trim((string)($_POST['nombre'] ?? ''));
+$apellido = trim((string)($_POST['apellido'] ?? ''));
+$edad = filter_var($_POST['edad'] ?? null, FILTER_VALIDATE_INT);
+$celular = trim((string)($_POST['celular'] ?? ''));
+$direccion = trim((string)($_POST['direccion'] ?? ''));
+$email = strtolower(trim((string)($_POST['email'] ?? '')));
+$password = (string)($_POST['password'] ?? '');
+$confirm = (string)($_POST['confirm-password'] ?? '');
+if ($nombre === '' || strlen($nombre) > 100 || $apellido === '' || strlen($apellido) > 100 ||
+    $edad === false || $edad < 18 || $edad > 100 ||
+    !preg_match('/^[0-9+() -]{7,20}$/', $celular) ||
+    $direccion === '' || strlen($direccion) > 255 ||
+    !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 100 ||
+    strlen($password) < 12 || strlen($password) > 128 || $password !== $confirm) {
+    $_SESSION['error_message_registro'] = 'Revisa los datos y utiliza una contraseña de al menos 12 caracteres.';
+    header('Location: registro.php', true, 303); exit;
+}
+require __DIR__ . '/conexion.php';
+try {
+    $stmt = $conn->prepare('INSERT INTO usuarios (nombre, apellido, edad, celular, direccion, email, password, rol) VALUES (?, ?, ?, ?, ?, ?, ?, ?)');
+    $hashed = password_hash($password, PASSWORD_DEFAULT);
+    $role = 'usuario';
+    $stmt->bind_param('ssisssss', $nombre, $apellido, $edad, $celular, $direccion, $email, $hashed, $role);
+    $stmt->execute();
+    $_SESSION['success_message_login'] = 'Cuenta creada. Ya puedes iniciar sesión.';
+    header('Location: login.php', true, 303);
+} catch (mysqli_sql_exception $e) {
+    error_log('Tambito signup failed: ' . $e->getCode());
+    $_SESSION['error_message_registro'] = $e->getCode() === 1062 ? 'El correo ya está registrado.' : 'No se pudo crear la cuenta.';
+    header('Location: registro.php', true, 303);
+}
+exit;
