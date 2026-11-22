@@ -23,7 +23,11 @@
             </div>
 
             <div class="nav-right">
-                <div class="search-container"><a href="categorias.php" aria-label="Explorar catálogo"><i class="fas fa-search"></i> Catálogo</a></div>
+                <form class="search-container" action="categorias.php" method="GET" role="search">
+                  <label class="visually-hidden" for="search-products">Buscar en el catálogo</label>
+                  <input id="search-products" type="search" name="q" maxlength="100" placeholder="Buscar productos...">
+                  <button type="submit" aria-label="Buscar productos"><i class="fas fa-search"></i></button>
+                </form>
 
                 <div class="cart-container">
                     <a class="cart-icon" href="carrito.php" aria-label="Ver carrito de demostración">
