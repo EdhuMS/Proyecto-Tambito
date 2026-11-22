@@ -1,0 +1,58 @@
+/* Administration UI: responsive components, isolated from storefront styles. */
+.body-admin{background:#f8f4f7;color:var(--color-ink)}
+.content-admin{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+.content-admin>input[type=radio]{position:absolute;opacity:0;width:1px;height:1px;pointer-events:none}
+.sidebar-admin{background:#451233;color:#fff;padding:1.5rem;display:flex;flex-direction:column;gap:1.1rem;min-width:0}
+.sidebar-admin .logo img{max-width:135px;max-height:65px;object-fit:contain}
+.sidebar-admin h2{font-size:1.1rem;color:#fff;margin:0}
+.sidebar-admin .admin-info{font-size:.87rem;line-height:1.3;color:#ead6e4;overflow-wrap:anywhere}
+.sidebar-admin nav{display:grid;gap:.45rem}
+.sidebar-admin nav label{display:block;padding:.75rem 1rem;background:rgba(255,255,255,.08);border:1px solid transparent;color:#fff;border-radius:10px;cursor:pointer;font-weight:650}
+.sidebar-admin nav label:hover{background:rgba(255,255,255,.18)}
+#tab-inicio:checked~.sidebar-admin nav label[for=tab-inicio],
+#tab-nosotros:checked~.sidebar-admin nav label[for=tab-nosotros],
+#tab-contacto:checked~.sidebar-admin nav label[for=tab-contacto],
+#tab-categoria:checked~.sidebar-admin nav label[for=tab-categoria]{background:var(--color-accent);color:#2b1724}
+.sidebar-admin .cerrar-sesion{margin-top:auto;color:#fff;border:1px solid rgba(255,255,255,.25);padding:.75rem;border-radius:10px;text-align:center;font-weight:700}
+.sidebar-admin .cerrar-sesion:hover{background:#a61b51}
+.main-admin{padding:clamp(1.2rem,3vw,3rem);min-width:0}
+.main-admin section{display:none;min-width:0}
+#tab-inicio:checked~.main-admin #inicio,
+#tab-nosotros:checked~.main-admin #nosotros,
+#tab-contacto:checked~.main-admin #contacto,
+#tab-categoria:checked~.main-admin #categoria{display:block}
+.titulo-admin{margin-bottom:1.4rem}
+.titulo-admin h1{font-size:clamp(1.55rem,3vw,2.5rem);margin:0}
+.main-admin h2{font-size:1.28rem;letter-spacing:-.02em}
+.main-admin h3{font-size:1.03rem}
+.inicio-opciones,.nosotros-opciones{display:grid;gap:1.15rem}
+.editar-eslogan,.editar-categorias,.editar-nosotros,.modificar-categoria,.editar-producto,.producto-campo,.contacto-admin,.editar-contacto,.contacto-opciones{
+  background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-md);padding:clamp(1rem,2vw,1.75rem);box-shadow:var(--shadow-soft);min-width:0
+}
+.editar-nosotros>div,.tipo-categoria{padding:1rem;background:var(--color-surface-alt);border-radius:var(--radius-sm);margin-bottom:1rem;min-width:0}
+.main-admin label:not(.sidebar-admin label){display:block;font-size:.89rem;font-weight:650;margin:.55rem 0 .3rem}
+.main-admin input[type=text],.main-admin input[type=number],.main-admin input[type=email],.main-admin input[type=file],.main-admin input[type=url],
+.main-admin select,.main-admin textarea{display:block;width:100%;max-width:100%;background:#fff;border:1px solid #d7cad3;border-radius:10px;color:var(--color-ink);padding:.75rem .85rem;margin-bottom:.85rem}
+.main-admin textarea{min-height:100px;resize:vertical}
+.main-admin input:focus-visible,.main-admin textarea:focus-visible{box-shadow:var(--focus-ring)}
+.boton-admin{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:.65rem;margin-top:1rem}
+.boton-admin button,.main-admin button{padding:.75rem 1.1rem;border:0;border-radius:10px;background:var(--color-primary);color:#fff;font-weight:750;min-height:42px}
+.boton-admin button.delete,.main-admin .borrar-producto{background:#fff3f4;color:#9c273a;border:1px solid #f1c7cd}
+.boton-admin button:hover,.main-admin button:hover{filter:brightness(.95)}
+#categoria .editar-producto,#categoria .producto-campo{margin-top:1rem}
+#categoria .producto-campo .producto-campo{border:0;box-shadow:none;padding:.5rem 0;margin:0}
+@media(max-width:930px){
+ .content-admin{grid-template-columns:1fr}
+ .sidebar-admin{padding:1rem 1.3rem;gap:.8rem}
+ .sidebar-admin .logo img{max-width:100px}
+ .sidebar-admin nav{grid-template-columns:repeat(4,minmax(0,1fr))}
+ .sidebar-admin nav label{text-align:center;padding:.65rem .3rem;font-size:.8rem}
+ .sidebar-admin .cerrar-sesion{margin-top:0;align-self:flex-start}
+}
+@media(max-width:550px){
+ .main-admin{padding:1rem .7rem}
+ .sidebar-admin nav{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .boton-admin{flex-direction:column;align-items:stretch}
+ .boton-admin button,.main-admin button{width:100%}
+ .main-admin .tipo-categoria{padding:.7rem}
+}
