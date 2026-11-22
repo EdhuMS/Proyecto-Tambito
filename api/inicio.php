@@ -1,11 +1,4 @@
 <?php
-header('Content-Type: application/json');
-
-$dataFile = '../data/inicio.json';
-
-if (file_exists($dataFile)) {
-    echo file_get_contents($dataFile);
-} else {
-    echo json_encode(["error" => "Archivo de inicio no encontrado."]);
-}
-?>
+declare(strict_types=1);
+require_once dirname(__DIR__) . '/app/bootstrap.php';
+(new \Tambito\Controllers\Api\ContentController())->show('inicio', false);

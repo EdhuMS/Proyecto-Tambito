@@ -1,6 +1,6 @@
 # Tambito — tienda de demostración académica
 
-**Proyecto de aprendizaje de desarrollo web full stack:** PHP, MySQL, HTML, CSS, JavaScript y un catálogo editable mediante JSON, con **40 productos ficticios distribuidos en cinco categorías**.
+**Proyecto académico full stack refactorizado con MVC:** PHP 8.1+, MySQL, vistas PHP reutilizables, CSS modular y JavaScript. Catálogo de **40 productos ficticios en cinco categorías**.
 
 > **Importante:** Tambito es una **demostración educativa no oficial**, inspirada en un formato de tienda de conveniencia. **No está afiliado, patrocinado ni respaldado por Tambo+**. No acepta compras, pagos, encargos ni datos comerciales reales. Algunos nombres, imágenes o signos de terceros se muestran con fines ilustrativos y mantienen sus derechos.
 
@@ -9,7 +9,7 @@
 | Módulo | Estado |
 | --- | --- |
 | Página de inicio, secciones informativas y contacto de demostración | Implementado |
-| Catálogo con categorías, búsqueda y fichas de producto | Implementado con datos de muestra |
+| Catálogo con categorías, búsqueda, tarjetas y filtros | Implementado con datos de muestra |
 | Carrito con cantidades, eliminar y total | Implementado, **solo en localStorage** |
 | Registro e inicio de sesión (MySQL) | Implementado, requiere configuración local |
 | Roles usuario / administrador | Implementado |
@@ -27,7 +27,7 @@ La administración guarda algunos datos en `data/*.json` y utiliza MySQL para la
 - Un servidor PHP local, por ejemplo PHP CLI o Apache/XAMPP.
 - Un navegador moderno.
 
-No requiere Composer ni npm para la ejecución de la aplicación. La biblioteca de iconos Font Awesome se carga desde un CDN externo.
+No requiere Composer ni npm para la ejecución de la aplicación. La interfaz principal utiliza componentes y estilos propios sin librerías de UI. Las pruebas visuales automatizadas utilizan Playwright (dependencia de desarrollo).
 
 ## Instalación local
 
@@ -77,36 +77,61 @@ No se proporcionan contraseñas administrativas predeterminadas. El registro pú
 
 ## Uso
 
-**Para visitantes:** busca productos desde la navegación, explora categorías, abre detalles, añade artículos al carrito y ajusta cantidades. El carrito se guarda en el navegador, no en MySQL; **no existe checkout real**.
+**Para visitantes:** explora productos en tarjetas reutilizables, busca y filtra categorías, añade artículos al carrito y ajusta cantidades. El carrito se guarda en el navegador, no en MySQL; **no existe checkout real**.
 
 **Para administradores locales:** edita el eslogan, categorías destacadas, información institucional ficticia, contacto de prueba y productos. Las escrituras del panel exigen una sesión de administración válida y un token CSRF.
 
 **Acceso a cuentas:** inicia sesión con una cuenta creada localmente. La recuperación antigua basada en correo y edad se deshabilitó porque no verificaba de manera segura la identidad. Para una futura versión haría falta un canal de correo verificable, tokens aleatorios de uso único con vencimiento y controles contra abuso.
 
-## Estructura
+## Arquitectura y estructura
+
+Tambito emplea un **MVC ligero con rutas PHP compatibles**, sin framework obligatorio:
 
 ```text
-api/                  Endpoints JSON de lectura y edición
-css/, js/             Estilos e interacción del navegador
-data/                 Catálogo y contenido de demostración (JSON)
-img/, uploads/        Imágenes (revisar derechos de terceros)
-scritpSQL/            Esquema inicial de MySQL
-security.php          Sesiones, CSRF, carga de imágenes y persistencia JSON
-conexion.php          Conexión MySQL desde config.local.php
-config.example.php    Plantilla de configuración sin secretos
-tests/                Pruebas de humo
-.github/workflows/    Validaciones automáticas
+app/
+├── Controllers/       Pantallas públicas, autenticación, administración y API
+├── Models/            Repositorios JSON, lectura y edición
+├── Views/
+│   ├── layouts/       Layouts público y administrativo
+│   ├── components/    Header, footer, tarjetas y formularios
+│   └── pages/         Home, catálogo, nosotros, contacto, carrito, cuenta y admin
+└── bootstrap.php      Autoload del namespace Tambito
+css/
+├── core/              Tokens de diseño y reset
+└── modules/           Layout, componentes, páginas, formularios y responsive
+js/
+├── admin/             Módulos específicos + cliente común de API
+├── cart.js            Servicio reutilizable de carrito local
+├── cart-page.js       Vista del carrito
+└── ui.js              Interacciones accesibles de navegación
+api/                   URLs de compatibilidad que delegan en controladores
+data/                  Documentos de demostración (JSON)
+tests/                 Pruebas PHP, seguridad, MySQL, carrito y Playwright
 ```
 
+Las pantallas comparten un sistema de componentes y estilos, en lugar de repetir HTML, JavaScript y reglas CSS por página. Consulta [ARCHITECTURE.md](docs/ARCHITECTURE.md) y [REFACTOR-REPORT.md](docs/REFACTOR-REPORT.md).
+
 ## Pruebas
+
+Verificación sintáctica y funcional básica:
 
 ```bash
 find . -type f -name '*.php' -print0 | xargs -0 -n 1 php -l
 find js -type f -name '*.js' -print0 | xargs -0 -n 1 node --check
 php tests/smoke.php
+php tests/mvc-smoke.php
+node --test tests/cart.test.cjs
 ```
 
-GitHub Actions realiza análisis sintáctico, pruebas del carrito, comprobaciones HTTP de autorización y una integración aislada con MySQL para registro, inicio de sesión, roles y CSRF. **Estas pruebas automatizadas no equivalen a una auditoría de seguridad de producción ni a pruebas E2E visuales.**
+Pruebas de navegador para cuatro tamaños de pantalla:
+
+```bash
+npm install
+npx playwright install chromium
+npm run test:ui
+```
+
+GitHub Actions realiza además validación HTTP, flujos de registro/login y permisos con MySQL temporal. Las pruebas verifican desbordamiento horizontal, navegación móvil, carrito y filtros, pero no sustituyen la revisión visual humana ni una auditoría de seguridad de producción.
 
 ## Seguridad y limitaciones conocidas
 
@@ -119,7 +144,7 @@ GitHub Actions realiza análisis sintáctico, pruebas del carrito, comprobacione
 - La configuración local y los datos de muestra deben sustituirse o evaluarse antes de cualquier despliegue externo.
 - No se ha verificado un entorno público desplegado ni se ha demostrado resistencia frente a todas las vulnerabilidades.
 
-Consulta [CIERRE-TECNICO.md](docs/CIERRE-TECNICO.md) para resultados comprobados, riesgos y pendientes de la demostración.
+Consulta [CIERRE-TECNICO.md](docs/CIERRE-TECNICO.md) y [REFACTOR-REPORT.md](docs/REFACTOR-REPORT.md) para resultados comprobados, riesgos y pendientes de la demostración.
 
 ## Derechos de autor y atribución
 

@@ -5,3 +5,8 @@ config.local.php
 *.log
 .DS_Store
 .vscode/
+
+# Browser test tooling
+node_modules/
+playwright-report/
+test-results/

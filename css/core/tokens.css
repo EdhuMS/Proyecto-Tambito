@@ -1,0 +1,35 @@
+:root {
+  color-scheme: light;
+  --color-primary: #781452;
+  --color-primary-hover: #5b0f3e;
+  --color-accent: #f4bd32;
+  --color-accent-soft: #fff5d9;
+  --color-ink: #221d25;
+  --color-text: #5f5663;
+  --color-surface: #fff;
+  --color-surface-alt: #faf6f9;
+  --color-line: #ece4ea;
+  --color-success: #207d53;
+  --color-danger: #b83344;
+  --shadow-soft: 0 10px 32px rgba(56, 19, 44, .07);
+  --shadow-card: 0 18px 55px rgba(56, 19, 44, .10);
+  --radius-sm: .7rem;
+  --radius-md: 1.1rem;
+  --radius-lg: 1.6rem;
+  --space-1: .35rem;
+  --space-2: .65rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+  --space-7: 4.5rem;
+  --page-max: 1200px;
+  --transition: 160ms ease;
+  --focus-ring: 0 0 0 3px rgba(120, 20, 82, .28);
+  --color-primario: var(--color-accent);
+  --color-secundario: var(--color-primary);
+  --color-texto: var(--color-ink);
+  --color-texto-claro: #fff;
+  --sombra: var(--shadow-soft);
+  --transicion: var(--transition);
+}

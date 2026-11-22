@@ -2,7 +2,7 @@ name: Tambito quality checks
 
 on:
   push:
-    branches: [main, "feat/**"]
+    branches: [main, "feat/**", "refactor/**"]
   pull_request:
     branches: [main]
 
@@ -30,6 +30,8 @@ jobs:
         run: find js -type f -name '*.js' -print0 | xargs -0 -n 1 node --check
       - name: PHP unit smoke
         run: php tests/smoke.php
+      - name: MVC controller and view smoke
+        run: php tests/mvc-smoke.php
       - name: Cart behavior tests
         run: node --test tests/cart.test.cjs
       - name: HTTP security smoke
@@ -77,3 +79,33 @@ jobs:
           sleep 2
       - name: Exercise real authentication and admin permissions
         run: bash tests/integration.sh
+
+  responsive-e2e:
+    # Playwright 1.55.x browser binaries target Ubuntu 24.04, not 26.04.
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PHP runtime
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: mysqli, fileinfo, session
+          coverage: none
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install browser testing dependencies
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium for Playwright
+        run: npx playwright install --with-deps chromium
+      - name: Test 4 viewports and page interactions
+        run: npm run test:ui
+      - name: Store failure evidence
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-evidence
+          path: |
+            test-results/
+            playwright-report/
+          if-no-files-found: ignore

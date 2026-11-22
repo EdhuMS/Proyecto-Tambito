@@ -1,0 +1,13 @@
+{
+  "name": "tambito-ui-tests",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Tooling for responsive tests of the educational MVC demo",
+  "scripts": {
+    "test:ui": "playwright test",
+    "test:ui:report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.55.1"
+  }
+}
