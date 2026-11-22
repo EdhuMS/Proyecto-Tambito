@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Home | Tambo+</title>
+    <title>Tambito | Tienda de demostración académica</title>
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -49,7 +49,7 @@
 
         <div class="promo-banner">
             <section class="promo-section">
-                <h2 class="section-title">PROMOCIONES</h2>
+                <h2 class="section-title">PROMOCIONES ILUSTRATIVAS</h2>
                 <div class="static-carousel">
                     <!-- Tarjeta 1 -->
                     <div class="promo-card">
@@ -57,7 +57,7 @@
                         <div class="promo-badge">-30%</div>
                         <div class="promo-overlay">
                             <p class="promo-text">LÁCTEOS FRESCOS</p>
-                            <button class="promo-btn">VER OFERTA</button>
+                            <a class="promo-btn" href="categorias.php">EXPLORAR CATÁLOGO</a>
                         </div>
                     </div>
 
@@ -67,7 +67,7 @@
                         <div class="promo-badge">2x1</div>
                         <div class="promo-overlay">
                             <p class="promo-text">HELADOS ARTESANALES</p>
-                            <button class="promo-btn">VER OFERTA</button>
+                            <a class="promo-btn" href="categorias.php">EXPLORAR CATÁLOGO</a>
                         </div>
                     </div>
 
@@ -77,7 +77,7 @@
                         <div class="promo-badge">-25%</div>
                         <div class="promo-overlay">
                             <p class="promo-text">DESPENSA</p>
-                            <button class="promo-btn">VER OFERTA</button>
+                            <a class="promo-btn" href="categorias.php">EXPLORAR CATÁLOGO</a>
                         </div>
                     </div>
 
@@ -87,7 +87,7 @@
                         <div class="promo-badge">-15%</div>
                         <div class="promo-overlay">
                             <p class="promo-text">SNACKS</p>
-                            <button class="promo-btn">VER OFERTA</button>
+                            <a class="promo-btn" href="categorias.php">EXPLORAR CATÁLOGO</a>
                         </div>
                     </div>
 
@@ -97,7 +97,7 @@
                         <div class="promo-badge">3x2</div>
                         <div class="promo-overlay">
                             <p class="promo-text">BEBIDAS</p>
-                            <button class="promo-btn">VER OFERTA</button>
+                            <a class="promo-btn" href="categorias.php">EXPLORAR CATÁLOGO</a>
                         </div>
                     </div>
 
@@ -107,7 +107,7 @@
                         <div class="promo-badge">-40%</div>
                         <div class="promo-overlay">
                             <p class="promo-text">CONGELADOS</p>
-                            <button class="promo-btn">VER OFERTA</button>
+                            <a class="promo-btn" href="categorias.php">EXPLORAR CATÁLOGO</a>
                         </div>
                     </div>
 
@@ -117,7 +117,7 @@
                         <div class="promo-badge">GRATIS</div>
                         <div class="promo-overlay">
                             <p class="promo-text">DELIVERY GRATIS - YAPE</p>
-                            <button class="promo-btn">VER OFERTA</button>
+                            <a class="promo-btn" href="categorias.php">EXPLORAR CATÁLOGO</a>
                         </div>
                     </div>
 
@@ -127,7 +127,7 @@
                         <div class="promo-badge">-20%</div>
                         <div class="promo-overlay">
                             <p class="promo-text">FRUTAS</p>
-                            <button class="promo-btn">VER OFERTA</button>
+                            <a class="promo-btn" href="categorias.php">EXPLORAR CATÁLOGO</a>
                         </div>
                     </div>
                 </div>
