@@ -1,6 +1,6 @@
 # Tambito — tienda de demostración académica
 
-**Proyecto de aprendizaje de desarrollo web full stack:** PHP, MySQL, HTML, CSS, JavaScript y un catálogo editable mediante JSON.
+**Proyecto de aprendizaje de desarrollo web full stack:** PHP, MySQL, HTML, CSS, JavaScript y un catálogo editable mediante JSON, con **40 productos ficticios distribuidos en cinco categorías**.
 
 > **Importante:** Tambito es una **demostración educativa no oficial**, inspirada en un formato de tienda de conveniencia. **No está afiliado, patrocinado ni respaldado por Tambo+**. No acepta compras, pagos, encargos ni datos comerciales reales. Algunos nombres, imágenes o signos de terceros se muestran con fines ilustrativos y mantienen sus derechos.
 
@@ -132,4 +132,4 @@ Las marcas, logotipos, imágenes de productos, diseños de terceros y demás rec
 - **2025:** prototipo inicial y funcionalidades de acceso de usuarios.
 - **2026:** recuperación, corrección y documentación del proyecto como demostración académica; implementación de controles de seguridad básicos, carrito local, pruebas y alcance explícito.
 
-Los cambios están versionados en el historial de GitHub. Este cierre es de **proyecto académico de portafolio**, no una certificación para producción.
+Los 40 registros son **datos ilustrativos**, con precios no comerciales y recursos gráficos cuya reutilización requiere revisar los derechos aplicables. Los cambios están versionados en el historial de GitHub. Este cierre es de **proyecto académico de portafolio**, no una certificación para producción.
