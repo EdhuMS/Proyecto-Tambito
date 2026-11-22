@@ -1,29 +1,19 @@
 <?php
-header('Content-Type: application/json');
-
-$dataFile = '../data/categorias.json';
-
-if (!file_exists($dataFile)) {
-    echo json_encode(["success" => false, "message" => "Archivo no encontrado"]);
-    exit;
-} 
-
-$data = json_decode(file_get_contents($dataFile), true);
-$antigua = $_POST['categoria_antigua'];
-$nueva = $_POST['categoria_nueva'];
-
-//isset verifica si la categoría antigua y nueva están definidas y no están vacías en null
-if (!isset($data[$antigua])) {
-    echo json_encode(["success" => false, "message" => "Categoría no encontrada"]);
-    exit;
+require_once __DIR__ . '/../security.php';
+tambito_admin_api();
+$file = __DIR__ . '/../data/categorias.json';
+$data = tambito_read_json($file);
+$old = trim((string)($_POST['categoria_antigua'] ?? ''));
+$new = trim((string)($_POST['categoria_nueva'] ?? ''));
+if ($new === '' || strlen($new) > 80 || !isset($data[$old])) {
+    tambito_fail('Categoría no válida o inexistente.');
 }
-
-// Renombrar la categoría
-//
-$data[$nueva] = $data[$antigua];
-unset($data[$antigua]);
-
-//usa print para que sea legible en el archivo JSON
-//usa unset para que los caracteres especiales no se escapen
-file_put_contents($dataFile, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-echo json_encode(["success" => true]);
+if ($old !== $new && isset($data[$new])) {
+    tambito_fail('Ya existe una categoría con ese nombre.', 409);
+}
+if ($old !== $new) {
+    $data[$new] = $data[$old];
+    unset($data[$old]);
+    tambito_write_json($file, $data);
+}
+echo json_encode(['success' => true]);

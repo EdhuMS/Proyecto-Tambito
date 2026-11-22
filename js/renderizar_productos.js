@@ -1,3 +1,7 @@
+// Escape data-derived text before placing it into HTML templates.
+const tambitoEscape = value => String(value ?? '').replace(/[&<>"']/g, char => ({
+  '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+}[char]));
 function renderizarProductos(data) {
   const contenedor = document.querySelector('.product-content');
   if (!contenedor) return;
@@ -21,22 +25,22 @@ function renderizarProductos(data) {
 
     const header = `
       <div class="category-header">
-        <h2 class="category-title">Productos de Categoría ${categoria}</h2>
+        <h2 class="category-title">Productos de Categoría ${tambitoEscape(categoria)}</h2>
       </div>
     `;
 
     const productosHTML = productos.map(producto => {
-      console.log(producto);
+      
 
       const discountBadge = producto.descuento ? `<div class="product-badge">-${producto.descuento}%</div>` : '';
 
       return `
-        <div class="product-card" data-product='${JSON.stringify(producto)}'> ${discountBadge}
+        <div class="product-card" data-product='${encodeURIComponent(JSON.stringify(producto))}'> ${discountBadge}
           <div class="product-image">
-            <img src="${producto.imagen_url}?v=${Date.now()}" alt="${producto.nombre}" loading="lazy">
+            <img src="${tambitoEscape(producto.imagen_url)}?v=${Date.now()}" alt="${tambitoEscape(producto.nombre)}" loading="lazy">
           </div>
           <div class="product-info">
-            <h3 class="product-name">${producto.nombre}</h3>
+            <h3 class="product-name">${tambitoEscape(producto.nombre)}</h3>
             <div class="product-footer">
               <div class="product-price">
                 <span class="current-price">S/ ${parseFloat(producto.precio).toFixed(2)}</span>
@@ -57,7 +61,7 @@ function renderizarProductos(data) {
           if (event.target.classList.contains('add-to-cart')) {
               return;
           }
-          const productData = JSON.parse(this.dataset.product);
+          const productData = JSON.parse(decodeURIComponent(this.dataset.product));
           window.openProductModal(productData);
       });
   });

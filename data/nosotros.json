@@ -1,17 +1,17 @@
 {
-    "nosotros": {
-        "titulo": "NOSOTROS",
-        "descripcion": "Somos una cadena peruana de tiendas por conveniencia",
-        "imagen_url": "uploads\/imagen-nosotros.png"
-    },
-    "mision": {
-        "titulo": "MISION",
-        "descripcion": "Mejorar la vida de sus clientes y colaboradores",
-        "imagen_url": "uploads\/imagen-mision.png"
-    },
-    "vision": {
-        "titulo": "VISION",
-        "descripcion": "Ser la Practi-Tienda con mayor n\u00famero de establecimientos en el pa\u00eds",
-        "imagen_url": "uploads\/imagen-vision.png"
-    }
+  "nosotros": {
+    "titulo": "SOBRE TAMBITO",
+    "descripcion": "Tambito es un prototipo académico de tienda web. Permite explorar catálogo y practicar operaciones administrativas sin pedidos reales.",
+    "imagen_url": "uploads/imagen-nosotros.png"
+  },
+  "mision": {
+    "titulo": "PROPÓSITO",
+    "descripcion": "Practicar el desarrollo con PHP, MySQL y JavaScript, documentar decisiones y mejorar la seguridad del prototipo.",
+    "imagen_url": "uploads/imagen-mision.png"
+  },
+  "vision": {
+    "titulo": "OBJETIVO FORMATIVO",
+    "descripcion": "Presentar un ejemplo reproducible para fines de aprendizaje y portafolio, sin representar a una empresa comercial.",
+    "imagen_url": "uploads/imagen-vision.png"
+  }
 }

@@ -1,25 +1,25 @@
 {
-    "eslogan": "CADA VEZ MÁS CERCA",
-    "categorias_destacadas": [
-        {
-            "nombre": "COMIDAS",
-            "imagen_url": "img/comidas.png"
-        },
-        {
-            "nombre": "BEBIDAS",
-            "imagen_url": "img/bebidas.webp"
-        },
-        {
-            "nombre": "ANTOJOS",
-            "imagen_url": "img/antojos.png"
-        },
-        {
-            "nombre": "DESPENSA",
-            "imagen_url": "img/despensa.webp"
-        },
-        {
-            "nombre": "HELADO",
-            "imagen_url": "img/helado.png"
-        }
-    ]
+  "eslogan": "EXPLORA UNA TIENDA DE DEMOSTRACIÓN",
+  "categorias_destacadas": [
+    {
+      "nombre": "COMIDAS",
+      "imagen_url": "img/comidas.png"
+    },
+    {
+      "nombre": "BEBIDAS",
+      "imagen_url": "img/bebidas.webp"
+    },
+    {
+      "nombre": "ANTOJOS",
+      "imagen_url": "img/antojos.png"
+    },
+    {
+      "nombre": "DESPENSA",
+      "imagen_url": "img/despensa.webp"
+    },
+    {
+      "nombre": "HELADOS",
+      "imagen_url": "img/helado.png"
+    }
+  ]
 }

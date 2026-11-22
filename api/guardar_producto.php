@@ -1,48 +1,34 @@
 <?php
-header('Content-Type: application/json');
+require_once __DIR__ . '/../security.php';
+tambito_admin_api();
+$dataFile = __DIR__ . '/../data/categorias.json';
+$data = tambito_read_json($dataFile);
 
-$dataFile = '../data/categorias.json';
-
-if (!file_exists($dataFile)) {
-    echo json_encode(["success" => false, "message" => "Archivo JSON no encontrado."]);
-    exit;
+$categoria = trim((string)($_POST['categoria'] ?? ''));
+$codigo = trim((string)($_POST['codigo'] ?? ''));
+$nombre = trim((string)($_POST['nombre'] ?? ''));
+$precio = filter_var($_POST['precio'] ?? null, FILTER_VALIDATE_FLOAT);
+if ($categoria === '' || strlen($categoria) > 80 || $nombre === '' || strlen($nombre) > 150 ||
+    !preg_match('/^[A-Za-z0-9_-]{2,30}$/', $codigo) || $precio === false || $precio <= 0 || $precio > 100000) {
+    tambito_fail('Categoría, código, nombre o precio inválido.');
 }
-
-$data = json_decode(file_get_contents($dataFile), true);
-
-$categoria = $_POST['categoria'];
-$codigo = $_POST['codigo'];
-$nombre = $_POST['nombre'];
-$precio = floatval($_POST['precio']);
-
-if (!isset($_FILES['imagen'])) {
-    echo json_encode(["success" => false, "message" => "Imagen no enviada."]);
-    exit;
+foreach ($data as $group) {
+    foreach (($group['productos'] ?? []) as $item) {
+        if (($item['codigo'] ?? '') === $codigo) {
+            tambito_fail('Ya existe un producto con ese código.', 409);
+        }
+    }
 }
-
-$imagenTmp = $_FILES['imagen']['tmp_name'];
-$nombreImagen = basename($_FILES['imagen']['name']);
-$rutaDestino = "../uploads/" . $nombreImagen;
-
-if (!move_uploaded_file($imagenTmp, $rutaDestino)) {
-    echo json_encode(["success" => false, "message" => "Error al mover la imagen."]);
-    exit;
+$image = tambito_upload_image('imagen', __DIR__ . '/../uploads', 'uploads');
+if ($image === null) {
+    tambito_fail('Selecciona una imagen JPG, PNG o WebP.');
 }
-
-// Agregar nueva categoría si no existe
 if (!isset($data[$categoria])) {
-    $data[$categoria] = ["productos" => []];
+    $data[$categoria] = ['productos' => []];
 }
-
-// Agregar producto nuevo
-$data[$categoria]["productos"][] = [
-    "codigo" => $codigo,
-    "nombre" => $nombre,
-    "precio" => $precio,
-    "imagen_url" => "uploads/" . $nombreImagen
+$data[$categoria]['productos'][] = [
+    'codigo' => $codigo, 'nombre' => $nombre,
+    'precio' => round((float)$precio, 2), 'imagen_url' => $image
 ];
-
-file_put_contents($dataFile, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
-echo json_encode(["success" => true]);
-?>
+tambito_write_json($dataFile, $data);
+echo json_encode(['success' => true]);

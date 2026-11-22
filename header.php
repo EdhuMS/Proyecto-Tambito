@@ -1,16 +1,5 @@
-<!-- header.php -->
-<!DOCTYPE html>
-<html lang="es">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Home | Tambo+</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-</head>
-
-<body>
+<!-- Shared navigation; this is an unofficial educational demonstration. -->
+<div class="demo-notice" role="note">Proyecto académico de demostración · No afiliado ni respaldado por Tambo+ · Sin compras ni pagos reales</div>
     <header class="header">
         <nav class="navbar">
             <div class="logo">
@@ -34,31 +23,17 @@
             </div>
 
             <div class="nav-right">
-                <div class="search-container" tabindex="0">
-                    <input type="text" placeholder="Buscar...">
-                    <i class="fas fa-search"></i>
-                </div>
+                <form class="search-container" action="categorias.php" method="GET" role="search">
+                  <label class="visually-hidden" for="search-products">Buscar en el catálogo</label>
+                  <input id="search-products" type="search" name="q" maxlength="100" placeholder="Buscar productos...">
+                  <button type="submit" aria-label="Buscar productos"><i class="fas fa-search"></i></button>
+                </form>
 
                 <div class="cart-container">
-                    <input type="checkbox" id="cart-toggle" class="cart-toggle">
-
-                    <label for="cart-toggle" class="cart-icon">
-                        <i class="fas fa-shopping-cart"></i>
-                    </label>
-
-                    <label for="cart-toggle" class="overlay-cart"></label>
-
-                    <div class="cart-sidebar">
-                        <h2>Tu carrito</h2>
-                        <ul>
-                            <li>Producto 1 - $10</li>
-                            <li>Producto 2 - $15</li>
-                            <li>Producto 3 - $20</li>
-                        </ul>
-                        <a href="carrito.php" class="checkout-button-carrito">Pagar</a>
-                    </div>
+                    <a class="cart-icon" href="carrito.php" aria-label="Ver carrito de demostración">
+                      <i class="fas fa-shopping-cart"></i> <span class="cart-count" aria-live="polite">0</span>
+                    </a>
                 </div>
-
                 <div class="login-icon">
                     <a href="login.php" class="login-icon">
                         <i class="fas fa-user"></i>
@@ -67,3 +42,4 @@
             </div>
         </nav>
     </header>
+<script src="js/cart.js" defer></script>

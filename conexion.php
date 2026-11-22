@@ -1,12 +1,25 @@
 <?php
-$host = "localhost";
-$user = "root";
-$pass = ""; // sin contraseña por defecto en XAMPP
-$dbname = "tienda_tambo"; // cambia si usaste otro nombre de base de datos
-
-$conn = new mysqli($host, $user, $pass, $dbname);
-
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
+declare(strict_types=1);
+// All credentials are loaded from a local, untracked file.
+$configPath = __DIR__ . '/config.local.php';
+if (!is_file($configPath)) {
+    error_log('Tambito: missing local database configuration.');
+    http_response_code(503);
+    exit('Base de datos no configurada. Consulta el README del proyecto.');
 }
-?>
+$config = require $configPath;
+try {
+    mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+    $conn = new mysqli(
+        (string)$config['host'],
+        (string)$config['user'],
+        (string)$config['password'],
+        (string)$config['database'],
+        (int)($config['port'] ?? 3306)
+    );
+    $conn->set_charset('utf8mb4');
+} catch (Throwable $exception) {
+    error_log('Tambito DB connection failed: ' . $exception->getMessage());
+    http_response_code(503);
+    exit('Servicio de base de datos temporalmente no disponible.');
+}

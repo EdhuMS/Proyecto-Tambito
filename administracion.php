@@ -1,6 +1,7 @@
 <?php
-session_start();
-if (!isset($_SESSION['id']) || $_SESSION['rol'] !== 'admin') {
+require_once __DIR__ . '/security.php';
+tambito_session();
+if (!isset($_SESSION['id']) || ($_SESSION['rol'] ?? '') !== 'admin') {
     header("Location: login.php");
     exit();
 }
@@ -13,10 +14,12 @@ if (!isset($_SESSION['id']) || $_SESSION['rol'] !== 'admin') {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="csrf-token" content="<?php echo htmlspecialchars(tambito_csrf_token(), ENT_QUOTES, 'UTF-8'); ?>">
   <title>Administracion | Tambo</title>
   <link rel="stylesheet" href="css/styles.css">
   <link rel="stylesheet" href="css/pages/administracion.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="js/admin-security.js"></script>
   <script src="js/guardarNosotros.js"></script>
   <script src="js/guardar_categorias.js"></script>
   <script src="js/admin-productos.js" defer></script>
@@ -48,7 +51,7 @@ if (!isset($_SESSION['id']) || $_SESSION['rol'] !== 'admin') {
       <h2>Admin. Secciones</h2>
 
       <h3 class="admin-info">
-        Bienvenido, <?php echo $_SESSION['nombre']; ?>
+        Bienvenido, <?php echo htmlspecialchars((string)($_SESSION['nombre'] ?? ''), ENT_QUOTES, 'UTF-8'); ?>
       </h3>
 
 

@@ -1,41 +1,21 @@
 <?php
-$dataFile = '../data/nosotros.json';
- 
-// Crear carpeta si no existe
-if (!file_exists('../uploads')) {
-    mkdir('../uploads', 0777, true);
-}
-   
-// Procesar imagen y moverla
-function procesarImagen($campo, $nombreFinal) {
-    if (isset($_FILES[$campo]) && $_FILES[$campo]['error'] === UPLOAD_ERR_OK) {
-        $ruta = '../uploads/' . $nombreFinal;
-        move_uploaded_file($_FILES[$campo]['tmp_name'], $ruta);
-        return 'uploads/' . $nombreFinal;
+require_once __DIR__ . '/../security.php';
+tambito_admin_api();
+$file = __DIR__ . '/../data/nosotros.json';
+$current = tambito_read_json($file);
+$new = [];
+foreach (['nosotros', 'mision', 'vision'] as $key) {
+    $title = trim((string)($_POST[$key . '_titulo'] ?? ''));
+    $desc = trim((string)($_POST[$key . '_descripcion'] ?? ''));
+    if ($title === '' || strlen($title) > 150 || strlen($desc) > 4000) {
+        tambito_fail('Título o descripción inválida.');
     }
-    return $_POST["{$campo}_actual"] ?? 'img/default-icon.png';
+    $image = tambito_upload_image($key . '_imagen', __DIR__ . '/../uploads', 'uploads');
+    $new[$key] = [
+        'titulo' => $title,
+        'descripcion' => $desc,
+        'imagen_url' => $image ?? ($current[$key]['imagen_url'] ?? 'img/default-icon.png')
+    ];
 }
-
-// Construir el nuevo JSON
-$nuevaData = [
-    "nosotros" => [
-        "titulo" => $_POST['nosotros_titulo'],
-        "descripcion" => $_POST['nosotros_descripcion'],
-        "imagen_url" => procesarImagen('nosotros_imagen', 'imagen-nosotros.png')
-    ],
-    "mision" => [
-        "titulo" => $_POST['mision_titulo'],
-        "descripcion" => $_POST['mision_descripcion'],
-        "imagen_url" => procesarImagen('mision_imagen', 'imagen-mision.png')
-    ],
-    "vision" => [
-        "titulo" => $_POST['vision_titulo'],
-        "descripcion" => $_POST['vision_descripcion'],
-        "imagen_url" => procesarImagen('vision_imagen', 'imagen-vision.png')
-    ]
-];
-
-// Guardar en el archivo JSON
-file_put_contents($dataFile, json_encode($nuevaData, JSON_PRETTY_PRINT));
-// Responder con éxito
-echo json_encode(["success" => true]);
+tambito_write_json($file, $new);
+echo json_encode(['success' => true]);
