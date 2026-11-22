@@ -12,7 +12,7 @@
 
       <div class="logo">
         <a href="index.php">
-          <img src="img/logo.svg" alt="Logo">
+          <img src="img/branding/tambito-logo-transparent.png" alt="Logo">
         </a>
       </div>
 
