@@ -5,7 +5,7 @@ $file = __DIR__ . '/../data/categorias.json';
 $data = tambito_read_json($file);
 $old = trim((string)($_POST['categoria_antigua'] ?? ''));
 $new = trim((string)($_POST['categoria_nueva'] ?? ''));
-if ($new === '' || mb_strlen($new) > 80 || !isset($data[$old])) {
+if ($new === '' || strlen($new) > 80 || !isset($data[$old])) {
     tambito_fail('Categoría no válida o inexistente.');
 }
 if ($old !== $new && isset($data[$new])) {
