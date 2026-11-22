@@ -1,27 +1,22 @@
 <?php
-$dataFile = '../data/contacto.json';
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nuevaData = [
-        "contacto" => [
-            "telefono" => $_POST['contacto_telefono'] ?? '',
-            "email" => $_POST['contacto_email'] ?? '',
-            "instagram_url" => $_POST['contacto_instagram_url'] ?? '',
-            "instagram_text" => $_POST['contacto_instagram_text'] ?? '',
-            "facebook_url" => $_POST['contacto_facebook_url'] ?? '',
-            "facebook_text" => $_POST['contacto_facebook_text'] ?? '',
-            "tiktok_url" => $_POST['contacto_tiktok_url'] ?? '',
-            "tiktok_text" => $_POST['contacto_tiktok_text'] ?? '',
-            "horario" => $_POST['contacto_horario'] ?? ''
-        ]
-    ];
-
-    if (file_put_contents($dataFile, json_encode($nuevaData, JSON_PRETTY_PRINT))) {
-        echo json_encode(["success" => true]);
-    } else {
-        echo json_encode(["success" => false, "message" => "Error writing to file."]);
-    }
-} else {
-    echo json_encode(["success" => false, "message" => "Invalid request method."]);
+require_once __DIR__ . '/../security.php';
+tambito_admin_api();
+$fields = ['telefono', 'email', 'instagram_url', 'instagram_text', 'facebook_url', 'facebook_text',
+           'tiktok_url', 'tiktok_text', 'horario'];
+$contact = [];
+foreach ($fields as $key) {
+    $value = trim((string)($_POST['contacto_' . $key] ?? ''));
+    if (mb_strlen($value) > 250) tambito_fail('Uno de los campos excede 250 caracteres.');
+    $contact[$key] = $value;
 }
-?>
+if ($contact['email'] !== '' && !filter_var($contact['email'], FILTER_VALIDATE_EMAIL)) {
+    tambito_fail('Correo electrónico inválido.');
+}
+foreach (['instagram_url', 'facebook_url', 'tiktok_url'] as $key) {
+    if ($contact[$key] !== '' && (!filter_var($contact[$key], FILTER_VALIDATE_URL) ||
+       !in_array(strtolower((string)parse_url($contact[$key], PHP_URL_SCHEME)), ['https'], true))) {
+        tambito_fail('Las redes sociales requieren URLs HTTPS válidas.');
+    }
+}
+tambito_write_json(__DIR__ . '/../data/contacto.json', ['contacto' => $contact]);
+echo json_encode(['success' => true]);
