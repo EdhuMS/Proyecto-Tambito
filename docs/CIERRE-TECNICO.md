@@ -19,6 +19,7 @@
 | HTML anidado por parciales y enlaces oficiales engañosos | Parciales ajustados y aclaración de demo no oficial |
 | README sin instrucciones comprobables | Guía local, arquitectura, pruebas y limitaciones |
 | Datos reales de contacto como muestra | Sustituidos por texto de demostración |
+| Productos mezclados e identificadores de prueba | Catálogo de 40 productos ficticios en cinco categorías y validación de integridad |
 
 ## Alcance verificable
 
@@ -28,7 +29,7 @@
 
 ## Verificación
 
-Las comprobaciones definidas en `.github/workflows/quality.yml` incluyen sintaxis PHP y JavaScript, validación JSON, persistencia local, pruebas unitarias de carrito, códigos HTTP de seguridad y una integración sobre MySQL temporal que ejercita registro, inicio de sesión, permisos por rol y rechazo/aceptación de escritura con CSRF.
+Las comprobaciones definidas en `.github/workflows/quality.yml` incluyen sintaxis PHP y JavaScript, validación de 40 productos, rutas de imágenes y códigos únicos, persistencia local, pruebas unitarias de carrito, códigos HTTP de seguridad y una integración sobre MySQL temporal que ejercita registro, inicio de sesión, permisos por rol y rechazo/aceptación de escritura con CSRF.
 
 **Evidencia:** el workflow de GitHub Actions [44976129269](https://github.com/EdhuMS/Proyecto-Tambito/actions/runs/44976129269) concluyó con resultado **success** para ambos jobs, incluido `mysql-integration`, sobre el commit `b7e2a728895b1876aad339a0742432ab28888f78`. Cambios posteriores en la misma rama requieren su propia validación. No se han ejecutado pruebas E2E visuales con navegador ni auditoría de producción.
 
