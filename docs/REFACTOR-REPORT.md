@@ -1,8 +1,10 @@
 # Informe de refactorización MVC y UI
 
 - **Proyecto:** Tambito (demostración académica).
-- **Rama de trabajo:** `refactor/mvc-component-ui`.
-- **Integración:** pendiente de verificación final.
+- **Rama de origen:** `refactor/mvc-component-ui`.
+- **Integración:** completada en `main` mediante [PR #2](https://github.com/EdhuMS/Proyecto-Tambito/pull/2).
+- **Commit de integración:** `cf22330cf1e1087ee938d8bc24340fec3d912d94`.
+- **Evidencia CI:** [GitHub Actions #44977672870](https://github.com/EdhuMS/Proyecto-Tambito/actions/runs/44977672870), 3/3 jobs `success` sobre el último commit de la rama.
 - **Licencia:** sin cambios; no se concede MIT automáticamente.
 - **Objetivo:** corregir arquitectura, duplicación, CSS y adaptación móvil.
 
@@ -35,4 +37,6 @@
 
 ## Cierre previsto
 
-El PR podrá fusionarse únicamente cuando las validaciones del último commit pasen y queden identificadas las tareas de seguimiento. Los resultados deben enlazarse desde este informe; nunca se declararán pruebas no ejecutadas como satisfactorias.
+**Cierre cumplido:** el último commit de la rama superó sintaxis y smoke, integración MySQL y Playwright en cuatro resoluciones. El PR #2 se fusionó por squash a `main`.
+
+**Validación pendiente fuera de CI:** revisión visual humana de detalle, pruebas con lectores de pantalla reales y auditoría de seguridad para escenarios productivos. Este cierre no implica habilitación para comercio real.
