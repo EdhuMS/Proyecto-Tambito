@@ -25,3 +25,15 @@
 .footer-grid a:hover{text-decoration:underline}
 .footer-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem;border-top:1px solid rgba(255,255,255,.17);padding:1.5rem 0;margin-top:2.5rem;color:#dbcbd5;font-size:.75rem}
 .footer-brand{font-size:1.8rem!important;color:#fff!important}
+
+/* Brand update: transparent wordmark on a high-contrast magenta header. */
+.site-header{background:#a30b73;border-bottom:1px solid #830a5c;backdrop-filter:none}
+.brand{display:inline-flex;align-items:center;flex-shrink:0;min-width:0}
+.brand-logo{display:block;width:clamp(132px,14vw,174px);height:auto;max-height:62px;object-fit:contain}
+.site-links a,.site-actions .icon-link{color:#fff}
+.site-links a[aria-current=page],.site-links a:hover,.site-actions .icon-link:hover{color:#ffeb35}
+.cart-link{background:#ffed34;color:#60104c}
+.cart-count{background:#711052;color:#fff}
+.nav-toggle{color:#ffeb35;border-color:rgba(255,255,255,.45)}
+.nav-toggle:hover{background:rgba(255,255,255,.12)}
+.footer-brand-logo{display:block;width:172px;max-width:100%;height:auto;object-fit:contain}
