@@ -8,7 +8,22 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             const contenedor = document.querySelector('.hero-content');
 
+            const search = (new URLSearchParams(location.search).get('q') || '').trim().toLocaleLowerCase().slice(0, 100);
+            let found = 0;
+            if (search) {
+                const heading = document.createElement('h1');
+                heading.textContent = 'Resultados para: ' + search;
+                contenedor.appendChild(heading);
+            }
             for (const categoria in data) {
+                const all = Array.isArray(data[categoria]?.productos) ? data[categoria].productos : [];
+                const filtered = search ? all.filter(p =>
+                    String(p.nombre || '').toLocaleLowerCase().includes(search) ||
+                    String(p.codigo || '').toLocaleLowerCase().includes(search) ||
+                    categoria.toLocaleLowerCase().includes(search)
+                ) : all;
+                if (!filtered.length) continue;
+                found += filtered.length;
                 const seccion = document.createElement('section');
                 seccion.classList.add('category-section');
 
@@ -30,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 let productosHTML = '';
 
-                const productosMostrados = data[categoria].productos.slice(0, 7);
+                const productosMostrados = filtered.slice(0, search ? filtered.length : 7);
 
                 productosMostrados.forEach(prod => {
                     const discountBadge = prod.descuento ? `<div class="product-badge">-${prod.descuento}%</div>` : '';
@@ -57,6 +72,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 contenedor.appendChild(seccion);
             }
 
+            if (!found) {
+                const p = document.createElement('p');
+                p.textContent = 'No se encontraron productos. Prueba otra búsqueda.';
+                contenedor.appendChild(p);
+            }
             document.querySelectorAll('.view-all, .vermas-card').forEach(button => {
                 button.addEventListener('click', function(event) {
                     const category = this.dataset.category;
