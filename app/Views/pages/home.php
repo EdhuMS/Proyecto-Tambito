@@ -2,7 +2,7 @@
 <section class="hero">
   <div class="container hero-grid">
     <div class="hero-copy">
-      <span class="eyebrow">TIENDA WEB · PROYECTO ACADÉMICO</span>
+      <span class="eyebrow"><?= View::escape($hero['eslogan'] ?? 'TIENDA WEB · PROYECTO ACADÉMICO') ?></span>
       <h1>Una experiencia de catálogo <em>simple y cercana.</em></h1>
       <p>Descubre cómo funciona una tienda web construida con PHP, componentes reutilizables y JavaScript. Todo el contenido es ilustrativo.</p>
       <div class="hero-actions">
@@ -23,9 +23,17 @@
   <?php View::partial('section-heading', ['eyebrow' => 'EXPLORAR', 'heading' => 'Categorías destacadas', 'link' => 'categorias.php', 'linkLabel' => 'Ver catálogo']); ?>
   <div class="category-grid">
     <?php
-    $featured = ['Comidas' => 'img/comidas.png', 'Bebidas' => 'img/bebidas.webp', 'Antojos' => 'img/antojos.png', 'Despensa' => 'img/despensa.webp', 'Helados' => 'img/helado.png'];
-    foreach ($featured as $name => $image) {
-        View::partial('category-card', compact('name', 'image'));
+    $fallbackImages = ['img/comidas.png', 'img/bebidas.webp', 'img/antojos.png', 'img/despensa.webp', 'img/helado.png'];
+    $featured = $hero['categorias_destacadas'] ?? [];
+    $names = array_keys($groups);
+    foreach ($names as $index => $category) {
+        $name = trim((string)($featured[$index]['nombre'] ?? $category));
+        if ($name === '') $name = $category;
+        $image = (string)($featured[$index]['imagen_url'] ?? $fallbackImages[$index] ?? '');
+        if (!preg_match('~^(?:\./)?(?:img/[A-Za-z0-9/_-]+|uploads/[a-f0-9]{32})\.(?:png|jpg|webp)$~i', $image)) {
+            $image = $fallbackImages[$index] ?? 'img/default-icon.png';
+        }
+        View::partial('category-card', compact('name', 'image', 'category'));
     }
     ?>
   </div>
