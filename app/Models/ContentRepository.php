@@ -40,7 +40,7 @@ final class ContentRepository
                 }
                 $price = filter_var($item['precio'] ?? null, FILTER_VALIDATE_FLOAT);
                 $path = (string)($item['imagen_url'] ?? '');
-                if ($price === false || $price < 0 || !preg_match('~^\.?/?img/PRODUCTOS-CATEGORIA/[A-Za-z0-9_-]+\.(png|jpg|webp)$~i', $path)) {
+                if ($price === false || $price < 0 || !preg_match('~^(?:\./)?(?:img/PRODUCTOS-CATEGORIA/[A-Za-z0-9_-]+|uploads/[a-f0-9]{32})\.(?:png|jpg|webp)$~i', $path)) {
                     continue;
                 }
                 $items[] = [
