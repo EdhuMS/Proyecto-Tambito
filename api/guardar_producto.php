@@ -8,7 +8,7 @@ $categoria = trim((string)($_POST['categoria'] ?? ''));
 $codigo = trim((string)($_POST['codigo'] ?? ''));
 $nombre = trim((string)($_POST['nombre'] ?? ''));
 $precio = filter_var($_POST['precio'] ?? null, FILTER_VALIDATE_FLOAT);
-if ($categoria === '' || mb_strlen($categoria) > 80 || $nombre === '' || mb_strlen($nombre) > 150 ||
+if ($categoria === '' || strlen($categoria) > 80 || $nombre === '' || strlen($nombre) > 150 ||
     !preg_match('/^[A-Za-z0-9_-]{2,30}$/', $codigo) || $precio === false || $precio <= 0 || $precio > 100000) {
     tambito_fail('Categoría, código, nombre o precio inválido.');
 }
