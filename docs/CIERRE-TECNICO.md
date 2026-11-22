@@ -22,15 +22,15 @@
 
 ## Alcance verificable
 
-**Implementado en código:** lectura y edición autorizada del catálogo, secciones informativas, carrito en localStorage, registro e inicio de sesión mediante MySQL, validaciones en backend y protección básica contra CSRF.
+**Implementado en código:** lectura y edición autorizada del catálogo, búsqueda por nombre y código, secciones informativas, carrito en localStorage, registro e inicio de sesión mediante MySQL, validaciones en backend y protección básica contra CSRF.
 
 **No implementado:** pedidos, pasarela de pagos, inventario transaccional, recuperación de contraseña por email, entrega y facturación. No se debe etiquetar como tienda en producción.
 
 ## Verificación
 
-Las comprobaciones automáticas definidas en `.github/workflows/quality.yml` incluyen sintaxis PHP y JavaScript, validación JSON, persistencia local y códigos HTTP de bloqueo administrativo. **Registrar sus resultados solo después de que GitHub Actions los ejecute.**
+Las comprobaciones definidas en `.github/workflows/quality.yml` incluyen sintaxis PHP y JavaScript, validación JSON, persistencia local, pruebas unitarias de carrito, códigos HTTP de seguridad y una integración sobre MySQL temporal que ejercita registro, inicio de sesión, permisos por rol y rechazo/aceptación de escritura con CSRF.
 
-No se han realizado pruebas integrales contra un MySQL configurado ni tests E2E con navegador en esta auditoría. La seguridad de una implementación en producción requiere revisión adicional.
+**Evidencia:** el workflow de GitHub Actions [44976129269](https://github.com/EdhuMS/Proyecto-Tambito/actions/runs/44976129269) concluyó con resultado **success** para ambos jobs, incluido `mysql-integration`, sobre el commit `b7e2a728895b1876aad339a0742432ab28888f78`. Cambios posteriores en la misma rama requieren su propia validación. No se han ejecutado pruebas E2E visuales con navegador ni auditoría de producción.
 
 ## Riesgos y decisiones
 
