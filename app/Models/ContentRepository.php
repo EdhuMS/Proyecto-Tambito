@@ -23,7 +23,9 @@ final class ContentRepository
     public function products(?string $category = null, string $search = ''): array
     {
         $result = [];
-        $search = mb_strtolower(trim($search), 'UTF-8');
+        $search = trim($search);
+        $lower = static fn (string $value): string => function_exists('mb_strtolower') ? mb_strtolower($value, 'UTF-8') : strtolower($value);
+        $search = $lower($search);
         foreach ($this->read('categorias') as $label => $group) {
             if (!is_string($label) || ($category !== null && $category !== $label)) {
                 continue;
@@ -33,7 +35,7 @@ final class ContentRepository
                 if (!is_array($item) || empty($item['codigo']) || empty($item['nombre'])) {
                     continue;
                 }
-                if ($search !== '' && !str_contains(mb_strtolower($label . ' ' . $item['nombre'] . ' ' . $item['codigo'], 'UTF-8'), $search)) {
+                if ($search !== '' && !str_contains($lower($label . ' ' . $item['nombre'] . ' ' . $item['codigo']), $search)) {
                     continue;
                 }
                 $price = filter_var($item['precio'] ?? null, FILTER_VALIDATE_FLOAT);
